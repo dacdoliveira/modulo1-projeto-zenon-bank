@@ -17,7 +17,7 @@ public class TesteLeituraCSV {
    static void main() {
        List<String> linesTransactionOutput = new ArrayList<>();
        List<String> linesTransactionOutputError = new ArrayList<>();
-        List<String> transactionsLines = TransactionIngestor.extractTransactionLines("./data/paysim_with_bad_data.csv");
+        List<String> transactionsLines = TransactionIngestor.extractTransactionLines("./data/paysim_with_bad_data.csv", 1000);
         int totalTransactions = 0;
        for (String line : transactionsLines){
            try{

@@ -19,20 +19,22 @@ public class TransactionIngestor {
     private static final int LIMIT = 1000;
     private static final int TOTAL_COLUMN = 11;
 
-    public static List<Transaction> extractTransaction(String filePath) {
+    public static List<Transaction> extractTransaction(String filePath, long limit) {
         Path path = Path.of(filePath);
 
-        List<Transaction> transactionList = new ArrayList<>();
-        if (Files.exists(path)) {
-                List<String> linesFinal = extractLines(path);
-                transactionList = linesFinal.stream().map(a -> convertLineToTransaction(a).orElse(null)).toList();
-                return transactionList;
-                //  foreach()
+        List<Transaction> linesTransactionOutput = new ArrayList<>();
 
-        } else {
-            throw new RuntimeException("Arquivo não encontrado");
+        List<String> transactionsLines = TransactionIngestor.extractTransactionLines(filePath, limit);
+
+        for (String line : transactionsLines){
+            try{
+                Optional<Transaction> transactionOp = TransactionIngestor.convertLineToTransaction(line);
+                transactionOp.ifPresent(linesTransactionOutput::add);
+            }catch (TransacionIngestorException e){
+               System.out.println("Error: " +line);
+            }
         }
-
+    return linesTransactionOutput;
     }
 
     public static List<String> extractLines(Path path) {
@@ -45,16 +47,16 @@ public class TransactionIngestor {
         }
     }
 
-    public static List<String> extractTransactionLines(String filePath) {
+    public static List<String> extractTransactionLines(String filePath, long limit) {
         Path path = Path.of(filePath);
 
         if (Files.exists(path)) {
 
             try {
                 List<String> lines = Files.readAllLines(path);
-                int limit = Math.min(lines.size(), LIMIT);
+                int limitSublist = Math.min(lines.size(), (int) limit);
 
-                return lines.subList(1, limit);
+                return lines.subList(1, limitSublist);
                 //  foreach()
             } catch (IOException e) {
                 throw new RuntimeException(e);
