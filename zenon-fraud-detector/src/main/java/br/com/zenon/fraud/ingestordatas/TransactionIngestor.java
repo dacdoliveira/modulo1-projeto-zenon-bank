@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class TransactionIngestor {
 
-    private static final int LIMIT = 1000;
+    private static final int LIMIT = 100000;
     private static final int TOTAL_COLUMN = 11;
 
     public static List<Transaction> extractTransaction(String filePath, long limit) {
@@ -24,7 +24,7 @@ public class TransactionIngestor {
 
         List<Transaction> linesTransactionOutput = new ArrayList<>();
 
-        List<String> transactionsLines = TransactionIngestor.extractTransactionLines(filePath, limit);
+        List<String> transactionsLines = extractTransactionLines(filePath, limit);
 
         for (String line : transactionsLines){
             try{
@@ -55,7 +55,7 @@ public class TransactionIngestor {
             try {
                 List<String> lines = Files.readAllLines(path);
                 int limitSublist = Math.min(lines.size(), (int) limit);
-
+                limitSublist++; //toIndex é não inclusivo
                 return lines.subList(1, limitSublist);
                 //  foreach()
             } catch (IOException e) {
