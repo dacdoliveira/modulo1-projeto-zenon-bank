@@ -37,6 +37,24 @@ public class TransactionIngestor {
     return linesTransactionOutput;
     }
 
+    public static List<Transaction> extractTransaction(String filePath) {
+        Path path = Path.of(filePath);
+
+        List<Transaction> linesTransactionOutput = new ArrayList<>();
+
+        List<String> transactionsLines = extractTransactionLines(filePath);
+
+        for (String line : transactionsLines){
+            try{
+                Optional<Transaction> transactionOp = TransactionIngestor.convertLineToTransaction(line);
+                transactionOp.ifPresent(linesTransactionOutput::add);
+            }catch (TransacionIngestorException e){
+                System.out.println("Error: " +line);
+            }
+        }
+        return linesTransactionOutput;
+    }
+
     public static List<String> extractLines(Path path) {
         try {
         List<String> lines = Files.readAllLines(path);
@@ -57,6 +75,23 @@ public class TransactionIngestor {
                 int limitSublist = Math.min(lines.size(), (int) limit);
                 limitSublist++; //toIndex é não inclusivo
                 return lines.subList(1, limitSublist);
+                //  foreach()
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            throw new RuntimeException("Arquivo não encontrado");
+        }
+
+    }
+
+    public static List<String> extractTransactionLines(String filePath) {
+        Path path = Path.of(filePath);
+
+        if (Files.exists(path)) {
+
+            try {
+                return Files.readAllLines(path);
                 //  foreach()
             } catch (IOException e) {
                 throw new RuntimeException(e);
