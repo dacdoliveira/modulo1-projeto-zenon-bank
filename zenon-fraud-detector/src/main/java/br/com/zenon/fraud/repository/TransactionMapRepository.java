@@ -20,4 +20,9 @@ public class TransactionMapRepository implements TransactionRepository{
     public Optional<Transaction> obterPorNomeCliente(String nomeCliente) {
         return Optional.of(transactionMap.get(nomeCliente));
     }
+
+    @Override
+    public void save(Transaction transaction) {
+        transactionMap.put(transaction.clientOrig().name(),transaction);
+    }
 }
