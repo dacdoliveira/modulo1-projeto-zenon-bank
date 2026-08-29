@@ -1,0 +1,40 @@
+-Cenário 1: Cerregar 10000 registros e salvar um a um (a cada "save" cria uma transação)
+
+Insert de todos durou: 109709067700 nanoSegundos
+buscando por: C1231006815
+Busca durou : 27965600 nanoSegundos
+buscando por: C1234
+Busca durou : 11778900 nanoSegundos
+
+-Cenário 2: Cerregar 10000 registros e salvar em lote
+Insert em lote durou: 676929400 nanoSegundos
+
+-Cenário 3: Utilizando método de não carregar tudo em memória, ou seja, utilizando  BufferedReader Limitado a 10000
+Insert em lote durou: 713853700 nanoSegundos
+
+-Cenário 4: Utilizando método de não carregar tudo em memória, ou seja, utilizando  BufferedReader Toda planilha
+Insert em lote durou: 84117579500 nanoSegundos
+
+- Cenário 5: ReadAsStream usando consumer (mitigando uso de memório) com todos os dados passou horas e não finalizou
+
+- Cenário 6: Mesmo de cenário 5, mas com limite de 10000
+Insert durou: 115532520400 nanoSegundos
+
+- Cenário 7: Mesmo de 6 mas com processamento de todo lote, ou seja, monta lote de 10000 e usa o saveBatch
+Insert durou: 766370900 nanoSegundos
+
+-- Tarefa 10 EfficientTransactionIngestor
+Cenário com 5 threads fixas consumindo e lotes de 10000:
+Insert durou: 33505501000 nanoSegundos
+Total Transações: 6360000
+Total Transações com fraudes: 7881
+Total valor das transações com fraudes: 11502431709.12
+Total valor das transações: 1143623279428.06
+
+Cenário com 10 threads fixas consumindo e lotes de 10000:
+Insert durou: 32308756100 nanoSegundos
+Total Transações: 6360000
+Total Transações com fraudes: 7881
+Total valor das transações com fraudes: 11502431709.12
+Total valor das transações: 1143623279428.06
+
