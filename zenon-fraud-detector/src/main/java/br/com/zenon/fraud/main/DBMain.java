@@ -20,13 +20,13 @@ public class DBMain {
         for (Transaction transaction: transactionList){
             if(count > 1331) {
                 repository.save(transaction);
-                System.out.println("Salvou " + count + "de " + total);
+              //  System.out.println("Salvou " + count + "de " + total);
             }
             count++;
         }
         long timeFim = System.nanoTime();
 
-      //  System.out.println("Insert em lote durou: " + (timeFim - timeIni) + " nanoSegundos");
+        System.out.println("Insert em lote durou: " + (timeFim - timeIni) + " nanoSegundos");
 
         String nomeCliente = "C1231006815";
         System.out.println("buscando por: " + nomeCliente);
